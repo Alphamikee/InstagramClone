@@ -1,0 +1,106 @@
+body{
+    min-width: 100vw;
+    min-height: 100vh;
+}
+.HomeContainer {
+    display: grid;
+    grid-template-rows: 1fr 14fr;
+}
+#root {
+    min-height: 100vh;
+    min-width: 100vw;
+}
+.NavBar {
+    display: grid;
+    position: absolute;
+    min-width: 98vw;
+    grid-template-columns: repeat(3 , 1fr);
+    background-color: white;
+    margin-left: 1px;
+    margin-right: 1px;
+    min-height: 55px;
+    border-top: lightgray 1px outset;
+    border-bottom: whitesmoke 1px outset;
+}
+.HomeContainer {
+    min-height: 100vh;
+    min-width: 100vw;
+}
+.image {
+    max-width: 108px;
+    height: auto;
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 12px;
+}
+input[type=text].instaSearch {
+    font-family: proxima-nove, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight:300;
+    letter-spacing: .5px;
+    height:30px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -khtml-border-radius: 15px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #edeeee;
+    background: #fafafa;
+    background-image: url("glass.png");
+    background-repeat: no-repeat;
+    background-size: 13px 13px;
+    background-position: 85px 7px;
+    outline: none;
+    width: 250px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: #c9cbcc;
+
+}
+input[type=text]:focus.instaSearch {
+    text-align: left;
+    padding-left: 30px;
+    background: #ffffff;
+    background-image: url("glass.png");
+    background-repeat: no-repeat;
+    background-size: 13px 13px;
+    background-position: 15px 7px;
+    color: #000000;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: #c9cbcc;
+}
+input:focus::-moz-placeholder {
+    color: #c9cbcc;
+}
+input:focus::-moz-placeholder {   /* Older versions of Firefox */
+    color: #c9cbcc;
+}
+input:focus::-ms-input-placeholder {
+    color: #c9cbcc;
+}
+.icon {
+    max-width: 24px;
+    max-height: 24px;
+    margin-top: 12px;
+    margin-right: 16px;
+}
+.icons {
+    margin-left: auto;
+}
+.MainContents {
+    min-height: 100vw;
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-rows: 1fr 5fr;
+}
+.storiesContainer {
+    background-color: white;
+    margin-left: 100px;
+    border: whitesmoke 1px outset;
+    overflow-scrolling: touch;
+    width: 612px;
+    height: 84px;
+}
