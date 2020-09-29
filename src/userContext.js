@@ -1,12 +1,17 @@
-import React , {useState ,createContext} from "react";
+import React , {useState ,createContext , useReducer} from "react";
 export const LoginContext = createContext();
-export function LoginProvider(props){
-   let [loginState,setLogin] = useState(false);
-   function setLoginState(value){
-       return setLogin(value);
-   }
+    const reducer = (state,pair) => ({...state,...pair});
+    const initialState = {
+        Login: false,
+        email: null,
+        password: null,
+        userId: null,
+        fullName: null,
+    } 
+    export function LoginProvider(props){
+         const [state, update] = useReducer(reducer, initialState)
     return (
-        <LoginContext.Provider value={[loginState,setLoginState]}>
+        <LoginContext.Provider value={[state,update]}>
             {props.children}
         </LoginContext.Provider>
     );

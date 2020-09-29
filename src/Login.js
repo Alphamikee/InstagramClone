@@ -1,17 +1,21 @@
 import React, {useState , useContext} from 'react';
 import 'firebase/auth';
 import './Login.css'
+import {LoginContext} from './userContext';
 import Firebase from "./Firebase";
 import {
     Link,
     withRouter
 } from 'react-router-dom'
 function Login(props){
-    let [email,setEmail] = useState('');
+    const [Context,setContext] = useContext(LoginContext);
+    let email = Context.email;
+   // let [email,setEmail] = setContext({email});
     let [password ,setPassword] = useState('');
     async function login(){
         try{
             await Firebase.login(email,password);
+            setContext({Login: true});
             props.history.replace('/');
         } catch (err){
             console.log(err.message);
@@ -19,12 +23,12 @@ function Login(props){
     }
         return (
                 <div id="wrapper">
-                    <div className="main-content">
+                    <div className="main-content"> 
                         <div className="header">
                             <h1 style={{fontFmaily: 'Lobster'}}>Instagram</h1>
                         </div>
                         <div className="l-part">
-                            <input type="text" placeholder="Username" className="input-1" name='Username' value={email} onChange={e => setEmail(e.target.value)}/>
+                            <input type="text" placeholder="Username" className="input-1" name='Username' value={email} onChange={e => setContext({email: e.target.value})}/>
                             <div className="overlap-text">
                                 <input type="password" placeholder="Password" className="input-2" name='Password' value={password} onChange={event => setPassword(event.target.value)}/>
                             </div>

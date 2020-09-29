@@ -1,5 +1,5 @@
 import React, {useEffect , useState} from 'react';
-import SignUp from './SignUp'
+import { SignUp } from './SignUp'
 import Home from "./Home";
 import Firebase from './Firebase'
 import {LoginProvider} from "./userContext";

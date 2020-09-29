@@ -3,20 +3,19 @@ import './SignUp.css'
 import {Link} from "react-router-dom";
 import Firebase from "./Firebase";
 import {LoginContext} from "./userContext";
-function SignUp(props){
-        let [email,setEmail] = useState('');
+export function SignUp(props){
+       let [email,setEmail] = useState('');
         let [fullName,setFullName] = useState('');
         let [userId,setUserId] = useState('');
         let [password,setPassword] = useState('');
-        let [setLoginState] = useContext(LoginContext);
+        let [login,setLoginState] = useContext(LoginContext);
     async function sett(){
         try{
-            await Firebase.signUp(fullName,email,password);
-            setLoginState(true);
-            props.history.replace('/');
-            alert('doneHere');
+            await Firebase.signUp(fullName,email,password,userId);
+            setLoginState({login: true});
+            console.log(login);
         } catch (error){
-            alert('error' , error.message);
+            console.log(error.message);
         }
     }
         return (
@@ -24,7 +23,7 @@ function SignUp(props){
                         <div className="header">
                             <h1 className="logo">Instagram</h1>
                             <p>Sign up to see photos and videos from your friends.</p>
-                            <button style={{backgroundColor: "orangered"}}><i className="fab fa-google-square"></i> Log in with Google !</button>
+                            <button style={{backgroundColor: "orangered"}} onClick={Firebase.addData}><i className="fab fa-google-square"></i> Log in with Google !</button>
                             <div>
                                 <hr />
                                     <p>OR</p>
@@ -70,4 +69,3 @@ function SignUp(props){
                         </div>
         );
 }
-export default SignUp

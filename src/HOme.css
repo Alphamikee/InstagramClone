@@ -93,14 +93,14 @@ input:focus::-ms-input-placeholder {
     min-height: 100vw;
     grid-row: 2 / 3;
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr 0.5fr;
     grid-template-rows: 1fr 5fr;
 }
 .storiesContainer {
+    grid-column: 2 / 3;
     background-color: white;
-    margin-left: 100px;
+    margin-right: 320px;
     border: whitesmoke 1px outset;
-    overflow-scrolling: touch;
     width: 612px;
     height: 84px;
 }
