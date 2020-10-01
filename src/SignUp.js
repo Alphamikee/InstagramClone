@@ -4,16 +4,24 @@ import {Link} from "react-router-dom";
 import Firebase from "./Firebase";
 import {LoginContext} from "./userContext";
 export function SignUp(props){
-       let [email,setEmail] = useState('');
-        let [fullName,setFullName] = useState('');
-        let [userId,setUserId] = useState('');
-        let [password,setPassword] = useState('');
-        let [login,setLoginState] = useContext(LoginContext);
+        let [Context,setContext] = useContext(LoginContext);
+        let login = Context.Login;
+        let setLoginState = State => setContext({Login: State});
+        let email = Context.email;
+        let setEmail = email => setContext({email: email});
+        let fullName = Context.fullName;
+        let setFullName = fullName => setContext({fullName: fullName});
+        let userId = Context.userId;
+        let setUserId = userId => setContext({userId: userId});
+        let password = Context.password;
+        let setPassword = password => setContext({password: password});
+        let profilePhoto = Context.profilePhoto
+        let setProfilePhoto = profilePhoto => setContext({profilePhoto: profilePhoto});
     async function sett(){
         try{
             await Firebase.signUp(fullName,email,password,userId);
-            setLoginState({login: true});
-            console.log(login);
+            setLoginState(true);
+            props.history.replace('/');
         } catch (error){
             console.log(error.message);
         }
@@ -23,7 +31,8 @@ export function SignUp(props){
                         <div className="header">
                             <h1 className="logo">Instagram</h1>
                             <p>Sign up to see photos and videos from your friends.</p>
-                            <button style={{backgroundColor: "orangered"}} onClick={Firebase.addData}><i className="fab fa-google-square"></i> Log in with Google !</button>
+                            <button style={{backgroundColor: "orangered"}}>
+                            <i className="fab fa-google-square"></i> Log in with Google !</button>
                             <div>
                                 <hr />
                                     <p>OR</p>
@@ -31,13 +40,14 @@ export function SignUp(props){
                             </div>
                         </div>
                         <div className="container">
-                            <form action="">
+                            <div>
                                 <input type="text" placeholder="Mobile Number or Email" name='Email' onChange={ e => setEmail(e.target.value)} value={email}/>
                                     <input type="text" placeholder="Full Name" name='Full Name' onChange={e => setFullName(e.target.value)} value={fullName}/>
-                                        <input type="text" placeholder="Username" name='Username' onChange={ e => setUserId(e.target.value)} value={userId}/>
+                                        <input type="text" placeholder="UserId" name='Username' onChange={ e => setUserId(e.target.value)} value={userId}/>
                                             <input type="password" placeholder="Password" name='Password' onChange={ e => setPassword(e.target.value)} value={password}/>
+                                             <input type='file' name='file' onChange ={e => setProfilePhoto(e.target.files[0])} />
                                                 <button onClick={sett}>Sign up</button>
-                            </form>
+                            </div>
 
                             <ul>
                                 <li>By signing up, you agree to our</li>

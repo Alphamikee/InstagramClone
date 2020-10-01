@@ -9,8 +9,7 @@ import {
 } from 'react-router-dom'
 function Login(props){
     const [Context,setContext] = useContext(LoginContext);
-    let email = Context.email;
-   // let [email,setEmail] = setContext({email});
+    let [email,setEmail] = useState('');
     let [password ,setPassword] = useState('');
     async function login(){
         try{
@@ -28,7 +27,7 @@ function Login(props){
                             <h1 style={{fontFmaily: 'Lobster'}}>Instagram</h1>
                         </div>
                         <div className="l-part">
-                            <input type="text" placeholder="Username" className="input-1" name='Username' value={email} onChange={e => setContext({email: e.target.value})}/>
+                            <input type="text" placeholder="Username" className="input-1" name='Username' value={email} onChange={e => setEmail( e.target.value)}/>
                             <div className="overlap-text">
                                 <input type="password" placeholder="Password" className="input-2" name='Password' value={password} onChange={event => setPassword(event.target.value)}/>
                             </div>

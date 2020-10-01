@@ -17,30 +17,36 @@ class Firebase{
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
         this.db = app.firestore()
-        this.addData = this.addData.bind(this);
+        this.storage = app.storage()
+        this.uploadData = this.uploadData.bind(this);
+        this.downloadData = this.downloadData.bind(this);
+        this.fetchAllDate = this.fetchAllDate.bind(this);
     }
+    /*      const snapshot = await db.collection('books').get();
+            //console.log(snapshot.docs.map(doc => doc.data()));
+            this.props.downloadBooks(snapshot.docs.map(doc => doc.data()));
+            return snapshot.docs.map(doc => doc.data());
+     */
     login(email,password){
         return this.auth.signInWithEmailAndPassword(email,password);
-    }
-    addData(fullName,userId){
-        console.log(this.auth.currentUser.uid);
-        this.db.collection('User').doc(this.auth.currentUser.uid).set({
-            fullName: 'fdfd',
-        })
     }
     logout(){
         return this.auth.signOut().then(() => console.log('done'));
     }
-    async signUp(fullName,email,password,userId){
-       // this.addData(email,password,fullName,userId,'dkd');
-       await this.auth.createUserWithEmailAndPassword(email,password);
-       this.addData(fullName,userId);
+    downloadData(value) {
+         let storageref = this.storage.ref();
+          storageref.child(value).getDownloadURL()
+          .then(url => url)
+          .catch( error => console.log(error.message));
     }
-   /*addUserId(userId){
-        return !this.auth.currentUser ? alert('not auth! ') : this.db.doc(`usersId${this.auth.currentUser.uid}`).set({
-            userId
-        })
-    }*/
+    async signUp(fullName,email,password,userId){
+       await this.auth.createUserWithEmailAndPassword(email,password);
+    }
+    uploadData(file){
+        let storageref = this.storage.ref();
+        let thisRef = storageref.child(file.name);
+        thisRef.put(file).then(snapshot => alert('done!'));
+    }
     isInitialized(){
     return new Promise(resolve => {
        this.auth.onAuthStateChanged(resolve)
@@ -49,5 +55,18 @@ class Firebase{
     isLoggedIn(){
         return this.auth.currentUser ? true : false;
     }
+    async fetchAllDate(){
+        const snapshot = await this.db.collection('User').get();
+        let array =  snapshot.docs.map(doc => doc.data().profilePhoto).filter( name => name !== undefined);
+        return array
+    }
 }
 export default new Firebase();
+        //console.log(snapshot.docs.map(doc => doc.data().profilePhoto));
+     /*     async componentDidMount() {
+            const snapshot = await db.collection('books').get();
+            console.log(snapshot.docs.map(doc => doc.data()));
+            this.props.downloadBooks(snapshot.docs.map(doc => doc.data()));
+        return snapshot.docs.map(doc => doc.data());
+    }
+           */

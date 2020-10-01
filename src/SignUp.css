@@ -68,22 +68,22 @@ main{
     flex-direction: column;
 }
 
-.page .container form, input{
+.page .container div, input{
     width: inherit;
 }
 
-.page .container form input{
+.page .container div input{
     border: 1px solid #dbdbdb;
     background-color: #fafafa;
     padding: 10px 5px;
     margin: 5px 0;
 }
 
-.page .container form input:last-of-type{
+.page .container div input:last-of-type{
     margin-bottom: 10px;
 }
 
-.page .container form button{
+.page .container div button{
     width: inherit;
     margin-bottom: 20px;
     padding: 7px 20px;
