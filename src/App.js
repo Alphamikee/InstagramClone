@@ -11,6 +11,7 @@ import {
 import Login from "./Login";
 function App(){
     let [firebaseInitialized, setFirebaseInitialized] = useState(false);
+    alert('Note: We store ALL YOUR DATA  , so never enter anything important here ! \n*yes even your password and email *');
     useEffect(() => {
         Firebase.isInitialized().then(val =>
         setFirebaseInitialized(val));

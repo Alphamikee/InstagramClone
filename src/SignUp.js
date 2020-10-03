@@ -23,7 +23,7 @@ export function SignUp(props){
             setLoginState(true);
             props.history.replace('/');
         } catch (error){
-            console.log(error.message);
+            alert(error.message);
         }
     }
         return (

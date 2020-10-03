@@ -10,7 +10,6 @@ function Home(props){
     let [State, setState] = useState('');
     let [sillyState , setSillyState] = useState(false);
     let [allPhotos , setallPhotos] = useState([]);
-    let test;
     function SignOut(){
         Firebase.logout();
         setLogin({Login: false})
@@ -20,14 +19,11 @@ function Home(props){
         usersRef.get()
         .then((docSnapshot) => {
           if (docSnapshot.exists) {
-            usersRef.onSnapshot((doc) => {
-              let wanted = doc.data().profilePhoto;
-              test = wanted
-              setState(test);
+            usersRef.onSnapshot((doc) => { 
+              setState(doc.data().profilePhoto);
              setTimeout(() => {
               setSillyState(true);
              }, 800); 
-            //  Firebase.downloadData(test);
             });
           } else {
             usersRef.set({
@@ -38,10 +34,13 @@ function Home(props){
               followers: [null],
               following: [null],
               profilePhoto: Login.profilePhoto.name.replace(/.*[\/\\]/, '')
-            }) // create the document
+            }) 
             Firebase.uploadData(Login.profilePhoto);
             usersRef.onSnapshot(doc => {
-           //   Firebase.downloadData(doc.data().profilePhoto);
+              setState(doc.data().profilePhoto);
+              setTimeout(() => {
+                setSillyState(true);
+               }, 800);
             })
           }
       });
@@ -51,21 +50,36 @@ function Home(props){
         const snapshot = await Firebase.db.collection('User').get();
         setallPhotos(snapshot.docs.map( doc => doc.data().profilePhoto).filter( name => name !== undefined))
         if(sillyState === true){ 
-          console.log(State);
-          console.log(allPhotos)
-          await setallPhotos(allPhotos.map( item =>  Firebase.downloadData(item)));
-          console.log(allPhotos);
+          setLogin({currentPhoto: State})
+          let convertToObject  = (arrayOne,arrayTwo) => {
+            let object = {};
+            for (let index = 0; index < arrayOne.length;) {
+              object[arrayOne[index]] = arrayTwo[index];
+              index += 1;     
+            }
+            return object
+          }
+          Firebase.fetchAllDate().then( data => setLogin({ allUsersData : data}));
+          let myArray = [];
+          Promise.all(
+            allPhotos.map( item => Firebase.downloadData(item).then(myData => myArray.push(myData)
+            ).catch(err => console.log(err.message))
+            )).then( () => { 
+              setLogin({finalObject: convertToObject(allPhotos,myArray)});
+            })
         }
-          //allPhotos.map( name => Firebase.downloadData(name))
         })()}
        , [ sillyState === true ])
+       Login.Login ? toggleDocs(Firebase.auth.currentUser.uid) : console.log('Login!')
             return (
-         Login.Login ? 
+              Login.Login  ?  
+              Login.finalObject !== null ? 
                 <div className={'HomeContainer'}>
-                    <NavBar />
+                     <NavBar />
+                    {console.log(Login.allUsersData)}
                     <MainContents />
-                    {toggleDocs(Firebase.auth.currentUser.uid)}
-                </div> : <Redirect to={'/Login' } />
+                </div> : <div className='loader'></div>
+                 : <Redirect to={'/Login' } />
         );
 }
 export default Home;

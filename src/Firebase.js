@@ -33,11 +33,11 @@ class Firebase{
     logout(){
         return this.auth.signOut().then(() => console.log('done'));
     }
-    downloadData(value) {
+   downloadData(value) {
          let storageref = this.storage.ref();
-          storageref.child(value).getDownloadURL()
-          .then(url => url)
-          .catch( error => console.log(error.message));
+         return storageref.child(value).getDownloadURL()
+          .then(url =>  url )
+          .catch( error => console.log(error.message))
     }
     async signUp(fullName,email,password,userId){
        await this.auth.createUserWithEmailAndPassword(email,password);
@@ -55,10 +55,10 @@ class Firebase{
     isLoggedIn(){
         return this.auth.currentUser ? true : false;
     }
-    async fetchAllDate(){
-        const snapshot = await this.db.collection('User').get();
-        let array =  snapshot.docs.map(doc => doc.data().profilePhoto).filter( name => name !== undefined);
-        return array
+ fetchAllDate(){
+        return  this.db.collection('User').get()
+        .then( datas => datas.docs.map( doc => doc.data()).filter( name => name !== undefined));
+        //let array =  snapshot.docs.map(doc => doc.data()).filter( name => name !== undefined);
     }
 }
 export default new Firebase();

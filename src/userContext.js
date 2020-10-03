@@ -1,4 +1,4 @@
-import React , {useState ,createContext , useReducer} from "react";
+import React , {createContext , useReducer} from "react";
 export const LoginContext = createContext();
     const reducer = (state,pair) => ({...state,...pair});
     const initialState = {
@@ -7,7 +7,10 @@ export const LoginContext = createContext();
         password: null,
         userId: null,
         fullName: null,
-        profilePhoto:''
+        profilePhoto:'',
+        finalObject: null,
+        currentPhoto: null,
+        allUsersData: null
     } 
     export function LoginProvider(props){
          const [state, update] = useReducer(reducer, initialState)

@@ -17,7 +17,7 @@ function Login(props){
             setContext({Login: true});
             props.history.replace('/');
         } catch (err){
-            console.log(err.message);
+            alert(err.message);
         }
     }
         return (
