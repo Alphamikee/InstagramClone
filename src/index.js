@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import {LoginProvider} from './userContext';
 import * as serviceWorker from './serviceWorker';
+alert('Note: We store ALL YOUR DATA  , so never enter anything important here ! \n*yes even your password and email *');
 ReactDOM.render(
-    <App />,
+  <LoginProvider>
+    <App />
+    </LoginProvider>,
   document.getElementById('root')
 );
 

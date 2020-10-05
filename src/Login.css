@@ -4,7 +4,8 @@
 }
 
 body {
-    background-color: #eee;
+    background-color: #fafafa;
+    color: #262626;
 }
 h1 {
     margin-bottom: 23px;
@@ -36,7 +37,7 @@ input {
     margin-bottom: 5px;
 }
 
-.header img {
+.header-Login img {
     height: 50px;
     width: 175px;
     margin: auto;
@@ -68,8 +69,7 @@ input {
     font-family: 'Overpass Mono', monospace;
     letter-spacing: -1px;
 }
-
-.btn {
+.btn-Login {
     width: 100%;
     background-color: #3897f0;
     border: 1px solid #3897f0;

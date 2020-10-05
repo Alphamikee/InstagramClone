@@ -1,6 +1,8 @@
 body{
     min-width: 100vw;
     min-height: 100vh;
+    background-color: #fafafa;
+    color: #262626;
 }
 .HomeContainer {
     display: grid;
@@ -18,7 +20,7 @@ body{
     background-color: white;
     margin-left: 1px;
     margin-right: 1px;
-    min-height: 55px;
+    height: 54px;
     border-top: lightgray 1px outset;
     border-bottom: whitesmoke 1px outset;
 }
@@ -27,11 +29,13 @@ body{
     min-width: 100vw;
 }
 .image {
-    max-width: 108px;
-    height: auto;
+    width: 103px;
+    height: 29px;
     display: inline-block;
     margin-top: 8px;
-    margin-left: 12px;
+}
+.react-autosuggest__container{
+    margin-left: auto;
 }
 input[type=text].react-autosuggest__input {
     font-family: proxima-nove, 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -43,7 +47,7 @@ input[type=text].react-autosuggest__input {
     -webkit-border-radius: 15px;
     -khtml-border-radius: 15px;
     border-radius: 15px;
-    text-align: center;
+    text-align: left;
     border: 1px solid #edeeee;
     background: #fafafa;
     background-image: url("glass.png");
@@ -58,8 +62,8 @@ input[type=text].react-autosuggest__input {
 
 }
 input[type=text]:focus.react-autosuggest__input {
-    text-align: left;
     padding-left: 30px;
+    text-align: left;
     background: #ffffff;
     background-image: url("glass.png");
     background-repeat: no-repeat;
@@ -155,3 +159,7 @@ ul {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }  
+  .icons{
+      margin-left: auto;
+      margin-right: auto;
+  }

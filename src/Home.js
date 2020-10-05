@@ -1,8 +1,8 @@
 import React , {useContext , useState , useEffect}  from 'react';
 import Firebase from "./Firebase";
-import './HOme.css'
+//import './HOme.css'
 import {LoginContext} from './userContext'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route, Router } from 'react-router-dom';
 import NavBar from "./navBar";
 import MainContents from "./MainContents";
 function Home(props){
@@ -20,8 +20,10 @@ function Home(props){
         .then((docSnapshot) => {
           if (docSnapshot.exists) {
             usersRef.onSnapshot((doc) => { 
-              setState(doc.data().profilePhoto);
+              console.log(Login.profilePhoto);
              setTimeout(() => {
+               setState(doc.data().profilePhoto);
+               console.log(Login.currentPhoto);
               setSillyState(true);
              }, 800); 
             });
@@ -73,7 +75,7 @@ function Home(props){
        Login.Login ? toggleDocs(Firebase.auth.currentUser.uid) : console.log('Login!')
             return (
               Login.Login  ?  
-              Login.finalObject !== null ? 
+              Login.allUsersData.length > 2 ? 
                 <div className={'HomeContainer'}>
                      <NavBar />
                     {console.log(Login.allUsersData)}

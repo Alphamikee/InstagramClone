@@ -23,7 +23,7 @@ function Login(props){
         return (
                 <div id="wrapper">
                     <div className="main-content"> 
-                        <div className="header">
+                        <div className="header-Login">
                             <h1 style={{fontFmaily: 'Lobster'}}>Instagram</h1>
                         </div>
                         <div className="l-part">
@@ -31,7 +31,7 @@ function Login(props){
                             <div className="overlap-text">
                                 <input type="password" placeholder="Password" className="input-2" name='Password' value={password} onChange={event => setPassword(event.target.value)}/>
                             </div>
-                            <input type="button" value="Log in" className="btn" onClick={login}/>
+                            <input type="button" value="Log in" className="btn-Login" onClick={login}/>
                         </div>
                     </div>
                     <div className="sub-content">

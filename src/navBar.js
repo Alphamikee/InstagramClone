@@ -4,7 +4,9 @@ import './searchResults.css';
 import Firebase from './Firebase';
 import {LoginContext} from './userContext';
 import Autosuggest from 'react-autosuggest';
+import Logo from './InstagramLogo.png'
 import SearchResults from "./searchResults";
+import { Link } from "react-router-dom";
 function NavBar(){
     let [Context,setContext] = useContext(LoginContext);
     //let [inputValue,setinputValue] = useState('');
@@ -34,7 +36,7 @@ function NavBar(){
       }
     return (
         <div className='NavBar' id='NavBar'>
-            <img src={require('./800px-Instagram_logo.svg.png')} alt='instagramLogo' className='image'/>
+            <img src={Logo} alt='instagramLogo' className='image' style={{marginLeft: 'auto'}}/>
            {/* <input type='text' name={'subject'} className='instaSearch' placeholder='Search' onChange={ e => setinputValue(e.target.value)} value={inputValue}/> */}
            <Autosuggest 
            suggestions ={suggestions}
@@ -49,7 +51,7 @@ function NavBar(){
                 <img src="https://img.icons8.com/wired/64/000000/paper-plane.png" className='icon'/>
                 <img src="https://img.icons8.com/android/24/000000/compass.png" className='icon'/>
                 <img src="https://img.icons8.com/android/24/000000/like.png" className='icon'/>
-                <img src={Context.finalObject[Context.currentPhoto]} className='icon' />
+               <Link to='ProfilePage'><img src={Context.finalObject[Context.currentPhoto]} className='icon'/></Link> 
             </div>
         </div> 
             )}

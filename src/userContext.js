@@ -8,9 +8,14 @@ export const LoginContext = createContext();
         userId: null,
         fullName: null,
         profilePhoto:'',
-        finalObject: null,
+        finalObject: {},
         currentPhoto: null,
-        allUsersData: null
+        allUsersData: [{
+            profilePhoto: null,
+            followers: [],
+            following: []
+        }],
+        posts: []
     } 
     export function LoginProvider(props){
          const [state, update] = useReducer(reducer, initialState)
