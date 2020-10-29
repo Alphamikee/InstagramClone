@@ -5,14 +5,15 @@ import {LoginContext} from './userContext'
 import { Redirect, Route, Router } from 'react-router-dom';
 import NavBar from "./navBar";
 import MainContents from "./MainContents";
+import styled from 'styled-components';
 function Home(props){
-    let [Login,setLogin] = useContext(LoginContext);
+    let {state,update} = useContext(LoginContext);
     let [State, setState] = useState('');
-    let [sillyState , setSillyState] = useState(false);
+    let [sillyState , setSillyState] = useState(0);
     let [allPhotos , setallPhotos] = useState([]);
     function SignOut(){
         Firebase.logout();
-        setLogin({Login: false})
+        update({state: false})
     }
     function toggleDocs(UID){
         let usersRef = Firebase.db.collection('User').doc(UID);
@@ -20,24 +21,22 @@ function Home(props){
         .then((docSnapshot) => {
           if (docSnapshot.exists) {
             usersRef.onSnapshot((doc) => { 
-              console.log(Login.profilePhoto);
              setTimeout(() => {
                setState(doc.data().profilePhoto);
-               console.log(Login.currentPhoto);
               setSillyState(true);
              }, 800); 
             });
           } else {
             usersRef.set({
-              password: Login.password,
-              email: Login.email,
-              fullName: Login.fullName,
-              userId: Login.userId,
+              password: state.password,
+              email: state.email,
+              fullName: state.fullName,
+              userId: state.userId,
               followers: [null],
               following: [null],
-              profilePhoto: Login.profilePhoto.name.replace(/.*[\/\\]/, '')
+              profilePhoto: state.profilePhoto.name.replace(/.*[\/\\]/, '')
             }) 
-            Firebase.uploadData(Login.profilePhoto);
+            Firebase.uploadData(state.profilePhoto);
             usersRef.onSnapshot(doc => {
               setState(doc.data().profilePhoto);
               setTimeout(() => {
@@ -52,33 +51,36 @@ function Home(props){
         const snapshot = await Firebase.db.collection('User').get();
         setallPhotos(snapshot.docs.map( doc => doc.data().profilePhoto).filter( name => name !== undefined))
         if(sillyState === true){ 
-          setLogin({currentPhoto: State})
+          update({currentPhoto: State})
           let convertToObject  = (arrayOne,arrayTwo) => {
             let object = {};
             for (let index = 0; index < arrayOne.length;) {
-              object[arrayOne[index]] = arrayTwo[index];
+              object[arrayOne[index]] = arrayTwo.filter( url => url.includes( arrayOne[index]))[0];
               index += 1;     
             }
             return object
           }
-          Firebase.fetchAllDate().then( data => setLogin({ allUsersData : data}));
+          Firebase.fetchAllDate().then( data => update({ allUsersData : data.map( data => data[0] = {...data[0] , id: data[1]})}));
           let myArray = [];
           Promise.all(
             allPhotos.map( item => Firebase.downloadData(item).then(myData => myArray.push(myData)
-            ).catch(err => console.log(err.message))
+            ).catch(err => alert(err.message))
             )).then( () => { 
-              setLogin({finalObject: convertToObject(allPhotos,myArray)});
+              update({finalObject: convertToObject(allPhotos,myArray)});
             })
-        }
-        })()}
+            Firebase.fetchAllPosts().then(data =>{ 
+                update({Posts: data.map( data => data[0] = {...data[0] , id: data[1]})})
+            }
+          )
+        }})()}
        , [ sillyState === true ])
-       Login.Login ? toggleDocs(Firebase.auth.currentUser.uid) : console.log('Login!')
+       state.Login ? toggleDocs(Firebase.auth.currentUser.uid) : console.log('state!')
             return (
-              Login.Login  ?  
-              Login.allUsersData.length > 2 ? 
-                <div className={'HomeContainer'}>
+              state.Login  ?  
+              state.allUsersData.length > 2 ? 
+                <div>
                      <NavBar />
-                    {console.log(Login.allUsersData)}
+                     {console.log(state.Posts)}
                     <MainContents />
                 </div> : <div className='loader'></div>
                  : <Redirect to={'/Login' } />

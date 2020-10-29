@@ -1,18 +1,70 @@
 import React , {useContext , useState}from "react";
-import './HOme.css';
 import './searchResults.css';
-import Firebase from './Firebase';
 import {LoginContext} from './userContext';
 import Autosuggest from 'react-autosuggest';
-import Logo from './InstagramLogo.png'
+import styled from 'styled-components';
 import SearchResults from "./searchResults";
 import { Link } from "react-router-dom";
+import { ReactComponent as Explore } from './explore.svg';
+import { ReactComponent as Avatar } from './avatar.svg';
+import { ReactComponent as Compass } from './compass.svg';
+import { ReactComponent as HomeIcon} from './icons8-home (1).svg'; 
+const Nav = styled.div`
+  background-color: #fff;
+  border-bottom: 1px outset rgba(0,0,0,.0975);
+  box-shadow: 0 2px 2px -2px gray;
+
+`
+const NavHeader = styled.div`
+  max-width: 1010px;
+  max-height: 55px;
+  padding-bottom: 40px; 
+  padding: 26px 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+`
+const NavLeft = styled.div`
+  width: 33.333%;
+  text-align: left;
+`
+const NavCenter = styled.div`
+  width: 33.333%;
+  text-align: center;
+`
+const Input = styled.input`
+  font-size: 16px;
+  border: solid 1px #dbdbdb;
+  border-radius: 3px;
+  color: #262626;
+  outline: 0;
+  padding: 7px 33px;
+  border-radius: 3px;
+  color: #999;
+  cursor: text;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  background: #fafafa;
+  &:active, &:focus {
+    text-align: left;
+  }
+`
+const NavRight = styled.div`
+  width: 33.333%;
+  text-align: right;
+  svg {
+    margin-right: 20px;
+  }
+`
+const MenuLink = styled.a`
+`
 function NavBar(){
-    let [Context,setContext] = useContext(LoginContext);
-    //let [inputValue,setinputValue] = useState('');
+    let {state,update} = useContext(LoginContext);
     let [value,setValue] = useState('');
     let [suggestions,setSuggestions] = useState('');
-    let allList = Context.allUsersData;
+    let allList = state.allUsersData;
     const getSuggestions = value => {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
@@ -20,8 +72,7 @@ function NavBar(){
     }
     const getSuggestionValue = suggestion => suggestion.name;
     const renderSuggestion = suggestion => (
-      //  <div>{suggestion.userId}</div>
-        <SearchResults userId = {suggestion.userId} img ={Context.finalObject[suggestion.profilePhoto]}/>
+        <SearchResults userId = {suggestion.userId} img ={state.finalObject[suggestion.profilePhoto]} followers={suggestion.followers} following={suggestion.following} fullName={suggestion.fullName} id={suggestion.id} key={suggestion.id}/>
     )
     let onSuggestionsFetchRequested = ({value}) => {
         setSuggestions(getSuggestions(value));
@@ -35,10 +86,11 @@ function NavBar(){
         setSuggestions([]);
       }
     return (
-        <div className='NavBar' id='NavBar'>
-            <img src={Logo} alt='instagramLogo' className='image' style={{marginLeft: 'auto'}}/>
-           {/* <input type='text' name={'subject'} className='instaSearch' placeholder='Search' onChange={ e => setinputValue(e.target.value)} value={inputValue}/> */}
-           <Autosuggest 
+          <Nav>
+            <NavHeader>
+            <NavLeft>NotInstagram</NavLeft>    
+            <NavCenter>  
+            <Autosuggest 
            suggestions ={suggestions}
            onSuggestionsFetchRequested ={onSuggestionsFetchRequested}
            onSuggestionsClearRequested ={onSuggestionsClearRequested}
@@ -46,14 +98,19 @@ function NavBar(){
            renderSuggestion={renderSuggestion}
            inputProps={inputProps}
            />
-            <div className='icons'>
-                <img src="https://img.icons8.com/material/50/000000/dog-house--v1.png" className='icon'/>
-                <img src="https://img.icons8.com/wired/64/000000/paper-plane.png" className='icon'/>
-                <img src="https://img.icons8.com/android/24/000000/compass.png" className='icon'/>
-                <img src="https://img.icons8.com/android/24/000000/like.png" className='icon'/>
-               <Link to='ProfilePage'><img src={Context.finalObject[Context.currentPhoto]} className='icon'/></Link> 
-            </div>
-        </div> 
+           </NavCenter>  
+            <NavRight>
+                <Compass />
+                <Explore />
+            <Link to='/profilePage'>
+            <Avatar />
+            </Link>
+            <Link to='/' >
+              <HomeIcon />
+            </Link>
+            </NavRight>
+            </NavHeader>
+        </Nav> 
             )}
             //<a href="https://icons8.com/icon/132/search">Search icon by Icons8</a>
 export default NavBar;

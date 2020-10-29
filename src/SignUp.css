@@ -3,11 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body{
-    background-color: #fafafa;
+    background-color: whitesmoke;
 }
-
 main{
     display: inline-block;
     flex-direction: column;
@@ -19,7 +17,6 @@ main{
     align-items: center;
     padding-bottom: 30px;
 }
-
 /* header style */
 .page .header{
     text-align: center;

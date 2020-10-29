@@ -21,6 +21,7 @@ class Firebase{
         this.uploadData = this.uploadData.bind(this);
         this.downloadData = this.downloadData.bind(this);
         this.fetchAllDate = this.fetchAllDate.bind(this);
+        this.promisedUploadData = this.promisedUploadData.bind(this);
     }
     /*      const snapshot = await db.collection('books').get();
             //console.log(snapshot.docs.map(doc => doc.data()));
@@ -36,8 +37,7 @@ class Firebase{
    downloadData(value) {
          let storageref = this.storage.ref();
          return storageref.child(value).getDownloadURL()
-          .then(url =>  url )
-          .catch( error => console.log(error.message))
+         .then( url => url)
     }
     async signUp(fullName,email,password,userId){
        await this.auth.createUserWithEmailAndPassword(email,password);
@@ -55,18 +55,17 @@ class Firebase{
     isLoggedIn(){
         return this.auth.currentUser ? true : false;
     }
- fetchAllDate(){
+    fetchAllDate(){
         return  this.db.collection('User').get()
-        .then( datas => datas.docs.map( doc => doc.data()).filter( name => name !== undefined));
+        .then( datas => datas.docs.map( doc => [doc.data() , doc.id]).filter( name => name !== undefined))
         //let array =  snapshot.docs.map(doc => doc.data()).filter( name => name !== undefined);
     }
+    fetchAllPosts(){
+        return this.db.collection('Posts').get()
+        .then(datas => datas.docs.map( doc => [doc.data() , doc.id]))
+    }
+    promisedUploadData(file){
+        return this.storage.ref().child(file.name).put(file)
+    }     
 }
 export default new Firebase();
-        //console.log(snapshot.docs.map(doc => doc.data().profilePhoto));
-     /*     async componentDidMount() {
-            const snapshot = await db.collection('books').get();
-            console.log(snapshot.docs.map(doc => doc.data()));
-            this.props.downloadBooks(snapshot.docs.map(doc => doc.data()));
-        return snapshot.docs.map(doc => doc.data());
-    }
-           */

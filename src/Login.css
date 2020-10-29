@@ -1,19 +1,4 @@
-* {
-    margin: 0px;
-    padding: 0px;
-}
 
-body {
-    background-color: #fafafa;
-    color: #262626;
-}
-h1 {
-    margin-bottom: 23px;
-}
-input {
-    display: inline-block;
-    margin-top: 12px;
-}
 #wrapper {
     width: 500px;
     height: 50%;
@@ -22,7 +7,6 @@ input {
     margin: 50px auto;
     padding: 10px;
 }
-
 .main-content {
     width: 250px;
     height: 40%;
@@ -53,6 +37,7 @@ input {
     border: 1px solid #dbdbdb;
     box-sizing: border-box;
     border-radius: 3px;
+    margin-top: 12px;
 }
 
 .overlap-text {
@@ -108,9 +93,34 @@ input {
 }
 
 input:focus {
-    background-color: yellow;
+    outline: none;
 }
-
+ul {
+    list-style-type: none;
+}
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30vh;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }  
 /* youtube link */
 .youtube{
     position: fixed;
