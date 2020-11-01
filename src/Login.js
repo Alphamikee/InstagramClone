@@ -7,7 +7,6 @@ import {
     Link,
     withRouter
 } from 'react-router-dom'
-import Posts from './Posts';
 function Login(props){
     const {state,update} = useContext(LoginContext);
     let [email,setEmail] = useState('');

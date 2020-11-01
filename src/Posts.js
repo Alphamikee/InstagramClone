@@ -160,7 +160,6 @@ export default function Posts(props) {
         })
         update({Posts: copyData});
     }
-    console.log(props);
     return (
         <Div>
         <Header > 
@@ -183,7 +182,7 @@ export default function Posts(props) {
         <p>{props.likes.length} likes</p>
          <P>view all {props.Comments.length} comments</P>
         <p style={{fontSize: '14px'}}>{props.date}</p>
-        {props.Comments.length > 2 ? props.Comments.sort( (commentOne,commentTwo) => commentOne.likes + commentTwo.likes).slice(0 , 2).map( comment => <h4>{comment}</h4>) : console.log()}
+    {props.Comments.length > 2 ? props.Comments.sort( (commentOne,commentTwo) => commentOne.likes + commentTwo.likes).slice(0 , 2).map( comment => <h4>{comment.Author}  {comment.Content}</h4>) : console.log()}
         </Status>
         <InputContaier>
         <Input placeholder='Add a comment...' type='text' onChange = { e => setComment(e.target.value)} value={Comment}/>

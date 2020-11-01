@@ -175,7 +175,7 @@ export default function ViewPosts(props) {
               update({allUsersData : copyUsersData});
                       }
     let RenderComments = props.Comments;
-    RenderComments.length > 0 ? RenderComments = props.Comments.map( Comment => <Comments Content = {Comment.Content} img={Comment.image} Author = {Comment.Author}/>) : RenderComments = <div>{props.Comments}</div>
+    
     return (
         <Container>
            <Image src={props.img}/> 
@@ -186,7 +186,6 @@ export default function ViewPosts(props) {
                    <strong style={{margin: 'auto' , marginRight: '100px' , marginLeft: '1px'}} onClick={CurrentUser.following.includes(props.launcher.userId) ? unFollow : follow}>{CurrentUser.following.includes(props.launcher.userId) ? 'unfollow' : 'follow'}{console.log(CurrentUser.following.includes(props.launcher.userId))}</strong>
                </Bio>
                 <div style={{width: '90%' , height: '100%'}}>
-                        {RenderComments}
                </div>
                <IconContainer>
                <Icon src={require('./iconmonstr-heart-thin.svg')} onClick={like} style={{filter: props.likes.includes(CurrentUser.userId) ? 'invert(15%) sepia(90%) saturate(7438%) hue-rotate(358deg) brightness(103%) contrast(107%)' : 'none'}} />
@@ -198,7 +197,7 @@ export default function ViewPosts(props) {
             <I >{props.date}</I>
             <InputsContainer>
             <Input placeholder='Write a Comment' onChange={ e => setComment(e.target.value)} value = {Comment}/>
-            <Button style={{color : Comment.length > 0 ? 'blue' : 'lightblue'}} onClick={comment}>Post</Button>
+            <Button style={{color : Comment.length > 0 ? 'blue' : 'lightblue'}} onClick={ Comment.length > 1 ? comment : () => alert('Please Write a Comment first')}>Post</Button>
             </InputsContainer>
            </CommentsSection>
         </Container>

@@ -1,11 +1,9 @@
 import React , {useContext , useState , useEffect}  from 'react';
 import Firebase from "./Firebase";
-//import './HOme.css'
 import {LoginContext} from './userContext'
 import { Redirect, Route, Router } from 'react-router-dom';
 import NavBar from "./navBar";
 import MainContents from "./MainContents";
-import styled from 'styled-components';
 function Home(props){
     let {state,update} = useContext(LoginContext);
     let [State, setState] = useState('');
@@ -72,12 +70,15 @@ function Home(props){
                 update({Posts: data.map( data => data[0] = {...data[0] , id: data[1]})})
             }
           )
+          Firebase.fetchAllStories().then(
+            data => update({Stories: data.map( data => data[0] = {...data[0] , docId : data[1]})})
+          )
         }})()}
        , [ sillyState === true ])
        state.Login ? toggleDocs(Firebase.auth.currentUser.uid) : console.log('state!')
             return (
               state.Login  ?  
-              state.allUsersData.length > 2 ? 
+              state.Stories.length > 0 ? 
                 <div>
                      <NavBar />
                      {console.log(state.Posts)}

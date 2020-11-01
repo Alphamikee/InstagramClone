@@ -1,4 +1,5 @@
 import React , {createContext , useReducer} from "react";
+import Storeis from "./Storeis";
 export const LoginContext = createContext();
     const reducer = (state,pair) => ({...state,...pair});
     const initialState = {
@@ -37,7 +38,8 @@ export const LoginContext = createContext();
                 userId: 'Alpha2',
                 nums : [6,7,8,9,0]
             }
-        ]
+        ] , 
+        Stories: [] 
     }
 export function ObjectProvider(props){
     const [state, update] = useReducer(reducer, initialState)

@@ -66,6 +66,10 @@ class Firebase{
     }
     promisedUploadData(file){
         return this.storage.ref().child(file.name).put(file)
+    }
+    fetchAllStories(){
+        return this.db.collection('Stories').get()
+        .then( Stories => Stories.docs.map( doc => [doc.data() , doc.id]))
     }     
 }
 export default new Firebase();

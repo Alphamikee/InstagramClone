@@ -3,7 +3,6 @@ import {Tab , Tabs , TabList , TabPanel} from 'react-tabs';
 import styled from 'styled-components';
 import {LoginContext} from './userContext';
 import Firebase from './Firebase';
-import Posts from './Posts';
 let Div = styled.div`
     width: 500px;
     height: 300px;
@@ -48,7 +47,7 @@ const FileStyling = {
         width:' 0.1px',
         height:' 0.1px',
         opacity: '0',
-        overflow: 'hidden',
+        overflow: "visible" /*Alpha*/,
         position: 'absolute',
         Zindex: '-1'
 }
@@ -86,12 +85,18 @@ let PostButton = styled.button`
         background: linear-gradient(90deg, deepskyblue 0%, #1E90FF) 91%);
     };
 `;
+let FileTypeLabel = styled.label`
+    display: inline-block;
+    margin: 6px;`;
 export default function PopUpContent({close}) {
     let timeStamp  = require('time-stamp');
     let [content , setContent] = useState('');
     let [image , setImage] = useState('');
     let { state, update} = useContext(LoginContext);
+    let [fileType , setFileType] = useState('');
     let Url;
+    let StoriesUrl;
+    let CurrentUser = state.allUsersData.filter( user => user.id === Firebase.auth.currentUser.uid)[0];
     function post() {
         Firebase.promisedUploadData(image).then(data => {
         Firebase.downloadData(data.ref.name).then(url => console.log(url));
@@ -125,6 +130,19 @@ export default function PopUpContent({close}) {
             update({Posts: copyData});
         })})});
     }
+    function Story(){
+        
+        Firebase.promisedUploadData(image).then(data => {
+        Firebase.downloadData(data.ref.name).then(url => StoriesUrl = url).then(() => {
+       let Array =  state.Stories.filter( story => story.name === CurrentUser.userId && Date.now() / 1000 - story.lastUpdated / 1000 < 86400);
+       console.log(Array);
+       Array[0].items.push( {[Firebase.db.collection('Stories').doc().id] : [Firebase.db.collection('Stories').doc().id , fileType , 3 , state.finalObject[CurrentUser.profilePhoto] , StoriesUrl , '' , false , false , Date.now()]}) 
+       Array.length > 0 ? Firebase.db.collection('Stories').doc(Array[0].docId).update({
+           items: Array[0].items
+       }).catch( error => console.log(error.message))      
+           : console.log(state) })}) 
+    }
+    console.log(fileType)
     return (
         <Tabs>
             <Div>
@@ -143,7 +161,11 @@ export default function PopUpContent({close}) {
                 <PostButton onClick={post}>Post</PostButton>
             </TabPanel>
             <TabPanel>
-                test2
+            <input type={'file'} required style={FileStyling} name={'file'} id={'file'} onChange={ e => e.target.files[0] != undefined ? setImage(e.target.files[0]) : console.log()}/>
+                <Label for={'file'} > { image.name !== undefined ? image.name : 'Post photo'}</Label>
+                <input  type = 'radio' id = 'photo' name = 'fileType' value = 'photo' onClick = { () => setFileType('photo')}/><FileTypeLabel for = 'photo'>photo</FileTypeLabel>
+                <input  type = 'radio' id = 'video' name = 'fileType' value = 'video' onClick = { () => setFileType('video')}/><FileTypeLabel for = 'video'>video</FileTypeLabel>
+                <PostButton onClick={Story}>Story</PostButton>
             </TabPanel>
             </PopContent>
             </Div>
