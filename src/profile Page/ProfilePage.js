@@ -1,10 +1,10 @@
 import React , {useContext} from 'react'
-import { LoginContext } from './userContext';
+import { LoginContext } from '../userContext';
 import { Redirect } from 'react-router-dom';
-import NavBar from './navBar';
+import NavBar from '../Home Page/navBar';
 import SingleImage from './SingleImage'
-import styled, { createGlobalStyle } from 'styled-components'
-import Firebase from './Firebase';
+import styled from 'styled-components'
+import Firebase from '../Firebase';
 import { useState } from 'react';
 
 const ProfileContainer = styled.div`
@@ -96,7 +96,7 @@ export default function ProfilePage(props) {
 
     let { state , update } = useContext(LoginContext);
     let [sillyState,setsillyState] = useState(false);
-    let CurrentUser = state.allUsersData.filter( person => person.profilePhoto === state.currentPhoto)[0];
+    let CurrentUser = state.allUsersData.filter( person => person.id === state.UID)[0];
     function EditProfile(){
       let elementIndex = state.array.findIndex( object => object.userId === 'Alpha');
       console.log(elementIndex);

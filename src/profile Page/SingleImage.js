@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { ReactComponent as Comment } from './comment.svg';
 import { ReactComponent as Heart } from './heart.svg';
 import {ReactComponent as Play } from './play.svg'
-import { LoginContext } from './userContext';
-import Firebase from './Firebase';
+import { LoginContext } from '../userContext';
+import Firebase from '../Firebase';
 const ImgContainer = styled.div`
   position: relative;
   flex-basis: 100%;
@@ -67,7 +67,7 @@ function Image (props) {
       <Img src={item.image} />
       <ImgMeta>
         <ImgIcons>{item.isVideo ? <Play /> : <image src={require('./heart.svg')} onClick={like} style={{fill: ! item.likes.includes(CurrentUser.userId) ? 'white' : 'red'}}> <Heart /> </image> } {item.likes.length}</ImgIcons>
-        <ImgIcons><Comment /> {item.Comments.length}</ImgIcons>
+        <ImgIcons> <Comment />{item.Comments.length}</ImgIcons>
       </ImgMeta>
     </ImgContainer>
   )

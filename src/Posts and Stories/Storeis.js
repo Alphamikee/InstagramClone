@@ -1,8 +1,7 @@
-import { database } from 'firebase';
 import React, { useContext, useEffect  , useState } from 'react';
 import Zuck from 'zuck.js';
-import Firebase from './Firebase';
-import { LoginContext } from './userContext';
+import Firebase from '../Firebase';
+import { LoginContext } from '../userContext';
 export default function Storeis() {
     let { state , update } = useContext(LoginContext);
     let myStories = state.Stories;
@@ -28,10 +27,7 @@ export default function Storeis() {
       }
     ] */
     let copyStories = [...myStories];
-    //copyStories[0] =  { ...copyStories[0] , items: [toArray(copyStories[0].items[0].FirstStory)]};
-    console.log(copyStories)
-    copyStories = copyStories.map( story => story = {...copyStories[copyStories.findIndex( storee => storee.docId === story.docId)] , items: toArray(copyStories[copyStories.findIndex( storee => storee.docId === story.docId)].items.map( item => item.FirstStory ))});
-    console.log(copyStories[0]);
+    copyStories = copyStories.map( story => story = {...copyStories[copyStories.findIndex( storee => storee.docId === story.docId)] , items: copyStories[copyStories.findIndex( storee => storee.docId === story.docId)].items.map( item => toArray(item) ).flat()});
     let myStory = {
     id: 'ramon',
     photo: 'https://raw.githubusercontent.com/ramon82/assets/master/zuck.js/users/1.jpg',
@@ -74,15 +70,11 @@ export default function Storeis() {
       ],
     ] 
   }
-  console.log(copyStories.filter( story => Date.now() / 1000 - story.lastUpdated / 1000 < 86000));
-  console.log(Date.now());
-  console.log(copyStories[0].lastUpdated)
   let [storiesElement , setStoriesElement] = useState(null);
   let [ Stories, setStories] = useState(
     copyStories.filter( story => story.name === CurrentUser.userId || CurrentUser.following.includes(story.name)).filter( story => Date.now() / 1000 - story.lastUpdated / 1000 < 86400).map( story => Zuck.buildTimelineItem(
       story.id , story.photo , story.name , story.link , story.lastUpdated , story.items
     )));
- console.log(Stories);
   useEffect(() => {
     let stories = new Zuck(storiesElement, {
       skin: 'snapgram', // container class
@@ -102,7 +94,6 @@ export default function Storeis() {
   const timelineItems = [];
   Stories.map((story, storyId) => {
     const storyItems = [];
-    console.log(story);
     story.items.map(storyItem => {
       storyItems.push(
         <li
@@ -152,7 +143,6 @@ export default function Storeis() {
     <div>
               <div ref={node => (storiesElement = node)} id="stories-react" className="storiesWrapper">
           {timelineItems}
-          {console.log(timelineItems)}
         </div>
     </div>
   )

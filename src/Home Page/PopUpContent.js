@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import {Tab , Tabs , TabList , TabPanel} from 'react-tabs';
 import styled from 'styled-components';
-import {LoginContext} from './userContext';
-import Firebase from './Firebase';
+import {LoginContext} from '../userContext';
+import Firebase from '../Firebase';
 let Div = styled.div`
     width: 500px;
     height: 300px;
@@ -99,12 +99,12 @@ export default function PopUpContent({close}) {
     let CurrentUser = state.allUsersData.filter( user => user.id === Firebase.auth.currentUser.uid)[0];
     function post() {
         Firebase.promisedUploadData(image).then(data => {
-        Firebase.downloadData(data.ref.name).then(url => console.log(url));
+        Firebase.downloadData(data.ref.name).then(url => (url));
         Firebase.downloadData(data.ref.name).then(url => Url = url).then(() => {
             let doc = Firebase.db.collection('Posts').doc();
             doc.set({
             Author : {
-                image: state.finalObject[state.currentPhoto] ,
+                image: CurrentUser.profilePhoto ,
                 userId: state.allUsersData.filter( doc => doc.id === Firebase.auth.currentUser.uid)[0].userId
             } , 
             Comments: [] ,
@@ -112,12 +112,11 @@ export default function PopUpContent({close}) {
             date :  timeStamp.utc('YYYY/MM/DD:HH:mm:ss') , 
             likes: [] , 
             image: Url
-           // postImage: 
         }).then( ()  => {
             let copyData = [...state.Posts];
             copyData.push({
                 Author : {
-                image: state.finalObject[state.currentPhoto] ,
+                image: CurrentUser.profilePhoto ,
                 userId: state.allUsersData.filter( doc => doc.id === Firebase.auth.currentUser.uid)[0].userId
             } , 
             Comments: [] ,
@@ -131,18 +130,37 @@ export default function PopUpContent({close}) {
         })})});
     }
     function Story(){
-        
+        let Array =  state.Stories.filter( story => story.name === CurrentUser.userId && Date.now() / 1000 - story.lastUpdated / 1000 < 86400);
         Firebase.promisedUploadData(image).then(data => {
         Firebase.downloadData(data.ref.name).then(url => StoriesUrl = url).then(() => {
-       let Array =  state.Stories.filter( story => story.name === CurrentUser.userId && Date.now() / 1000 - story.lastUpdated / 1000 < 86400);
-       console.log(Array);
-       Array[0].items.push( {[Firebase.db.collection('Stories').doc().id] : [Firebase.db.collection('Stories').doc().id , fileType , 3 , state.finalObject[CurrentUser.profilePhoto] , StoriesUrl , '' , false , false , Date.now()]}) 
-       Array.length > 0 ? Firebase.db.collection('Stories').doc(Array[0].docId).update({
+       Array.length > 0 ? (() => {
+       Array[0].items.push( {[Firebase.db.collection('Stories').doc().id] : [Firebase.db.collection('Stories').doc().id , fileType , 3 , StoriesUrl , CurrentUser.profilePhoto , '' , false , false , Date.now()]}) 
+       Firebase.db.collection('Stories').doc(Array[0].docId).update({
            items: Array[0].items
-       }).catch( error => console.log(error.message))      
-           : console.log(state) })}) 
+       }).then( () => {
+           Firebase.fetchAllStories().then( 
+            data => update({Stories: data.map( data => data[0] = {...data[0] , docId : data[1]})})
+     )
+       })    
+        })(): Firebase.db.collection('Stories').doc().set({
+               id: CurrentUser.userId , 
+               lastUpdated: Date.now() , 
+               link: '' , 
+               name : CurrentUser.userId , 
+               photo : CurrentUser.profilePhoto , 
+               items: [
+                {FirstStory : [Firebase.db.collection('Stories').doc().id , fileType , 3 , StoriesUrl , StoriesUrl , '' , false , false , Date.now()]}   
+               ]
+           }).then(() => {
+            Firebase.fetchAllStories().then( 
+                data => update({Stories: data.map( data => data[0] = {...data[0] , docId : data[1]})})
+         )
+           }).then(() => {
+               alert('done');
+           }) 
+           
+        })}) 
     }
-    console.log(fileType)
     return (
         <Tabs>
             <Div>

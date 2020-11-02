@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import {LoginContext} from './userContext';
-import Posts from './Posts'
+import {LoginContext} from '../userContext';
+import Posts from '../Posts and Stories/Posts'
 import Popup from 'reactjs-popup';
-import PopUpContent from './PopUpContent';
-import Firebase from "./Firebase";
-import Storeis from "./Storeis";
+import PopUpContent from '../Home Page/PopUpContent';
+import Firebase from "../Firebase";
+import Storeis from "../Posts and Stories/Storeis";
 let MainContent = styled.div`
     min-height: 100vw;
     grid-row: 2 / 3;
@@ -18,13 +18,14 @@ let MainContent = styled.div`
 let StoriesContainer = styled.div`
     grid-column: 2 / 3;
     background-color: white;
-    margin-right: 260px;
+    margin-right: 320px;
     border: whitesmoke 1px outset;
     overflow: visible /*Alpha*/;
     width: 700px;
-    height: 100px;
-    margin-top: 10%;
+    height: 120px;
+    margin-top: 6%;
     border: lightgrey 1px solid;
+    padding: 6px;
 `;
  let Div = styled.div`
     grid-column: 2 / 3;
@@ -55,7 +56,9 @@ let StoriesContainer = styled.div`
 function MainContents(props){
     let {state,update} = useContext(LoginContext);
     let CurrentUser = state.allUsersData.filter(user => user.id === Firebase.auth.currentUser.uid)[0];
-    let RenderPosts = state.Posts.map( post => <Posts likes = {post.likes} Comments={post.Comments} launcher={{
+    console.log(state.allUsersData);
+    console.log(Firebase.auth.currentUser.uid);
+    let RenderPosts = state.Posts.filter( post => CurrentUser.following.includes(post.Author.userId) || post.Author.userId === CurrentUser.userId).map( post => <Posts likes = {post.likes} Comments={post.Comments} launcher={{
         userId: post.Author.userId,
         img: post.Author.image ,
     }}
@@ -70,7 +73,7 @@ function MainContents(props){
                     <Storeis />
                 </StoriesContainer>
                 <Div>
-                    {RenderPosts}
+                    { (() => RenderPosts.length > 0 ? RenderPosts : <div>follow some people to get posts and stories or u can add posts and stories from left bottom button</div>)()}
                 </Div>
                 <Popup modal trigger ={<Button>+</Button>}>
                      {close => <PopUpContent close={close} />}
@@ -79,16 +82,3 @@ function MainContents(props){
     )
 }
 export default MainContents;
-/**
- *         buildItem('1', 'photo', 3, 'https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg', '', false, 1492665454),
-
-     stories:  [
-         {
-             id: props.userId,
-             photo: props.userPhoto,
-             name: props.userName,
-             link:'',
-             lastUpdate: props.time,
-             items: props.items.map( item => buildStory(item.id,item.type,3,item.src,'',item.lastUpdate)),
-
- */

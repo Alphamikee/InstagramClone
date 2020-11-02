@@ -1,11 +1,11 @@
 import React , {useState , useContext} from 'react';
-import {LoginContext} from './userContext';
+import {LoginContext} from '../userContext';
 import { ReactComponent as PaperPlane } from './paperPlane.svg';
 import {ReactComponent as Chat} from './Chat.svg';
 import {ReactComponent as Save} from './Save.svg';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import Firebase from './Firebase';
+import Firebase from '../Firebase';
 import Popup from 'reactjs-popup';
 import ViewPosts from './ViewPosts';
 const Div = styled.div`
@@ -150,7 +150,6 @@ export default function Posts(props) {
         update({Posts: copyData});
     }
     function comment(){
-        console.log('hi');
         let copyData = [...state.Posts];
         let targetPost = copyData.filter( post => post.id === props.id)[0];
         targetPost.Comments.push({Content: Comment , Author: CurrentUser.userId , likes: [] , image: props.launcher.img});

@@ -1,11 +1,10 @@
 import React, {useState , useContext} from 'react';
 import 'firebase/auth';
-import './Login.css'
-import {LoginContext} from './userContext';
-import Firebase from "./Firebase";
+import './Login.css';
+import {LoginContext} from '../userContext';
+import Firebase from "../Firebase";
 import {
     Link,
-    withRouter
 } from 'react-router-dom'
 function Login(props){
     const {state,update} = useContext(LoginContext);
@@ -14,7 +13,7 @@ function Login(props){
     async function login(){
         try{
             await Firebase.login(email,password);
-            update({Login: true});
+            update({Login: true , UID: Firebase.auth.currentUser.uid});
             props.history.replace('/');
         } catch (err){
             alert(err.message);

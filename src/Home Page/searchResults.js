@@ -1,7 +1,7 @@
 import React , {useContext , useState} from 'react'
 import { Link } from 'react-router-dom';
 import './searchResults';
-import {LoginContext} from './userContext';
+import {LoginContext} from '../userContext';
 export default function SearchResults(props) {
     let {state,update} = useContext(LoginContext);
     function createPage(){

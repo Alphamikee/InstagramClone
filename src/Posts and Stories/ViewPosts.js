@@ -1,8 +1,8 @@
 import React , {useContext, useState} from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
-import Firebase from './Firebase';
-import { LoginContext } from './userContext';
+import Firebase from '../Firebase';
+import { LoginContext } from '../userContext';
 let Container = styled.div`
     width: 880px;
     height: 600px;
@@ -113,8 +113,6 @@ export default function ViewPosts(props) {
     let { state , update } = useContext(LoginContext);
     let CurrentUser = state.allUsersData.filter( user => user.id === Firebase.auth.currentUser.uid)[0];
     let [ Comment , setComment ] = useState('');
-    let WantedUser = state.allUsersData.filter( user => user.userId === props.launcher.userId)[0];
-    console.log(CurrentUser);
     function like(){
         let copyData = [...state.Posts];
         let targetPost = copyData.filter( post => post.id === props.id)[0];
@@ -154,7 +152,7 @@ export default function ViewPosts(props) {
         let targetUser = state.allUsersData.filter(user => user.userId === props.launcher.userId)[0];
         update({[state.allUsersData.filter( doc => doc.userId ===  props.launcher.userId)]: state.allUsersData.filter(doc => doc.userId === props.launcher.userId)[0].followers.push(CurrentUser.userId)})
         update({[state.allUsersData.filter( doc => doc.id === Firebase.auth.currentUser.uid)]: state.allUsersData.filter(doc => doc.id === Firebase.auth.currentUser.uid)[0].following.push(props.launcher.userId)})
-        Firebase.db.collection('User').doc(WantedUser.id).update({
+        Firebase.db.collection('User').doc(targetUser.id).update({
         followers: targetUser.followers
         })
         Firebase.db.collection('User').doc(Firebase.auth.currentUser.uid).update({
@@ -166,7 +164,7 @@ export default function ViewPosts(props) {
             copyUsersData[elementIndex] = {...copyUsersData[elementIndex] , followers : state.allUsersData[elementIndex].followers.filter( follower => follower !== CurrentUser.userId)}
             let followingIndex = state.allUsersData.findIndex( doc => doc.id === Firebase.auth.currentUser.uid);
             copyUsersData[followingIndex] = {...copyUsersData[followingIndex] , following : state.allUsersData[followingIndex].following.filter( user =>  user !== props.launcher.userId)}
-            Firebase.db.collection('User').doc(WantedUser.id).update({
+            Firebase.db.collection('User').doc(state.allUsersData.filter( user => user.userId === props.launcher.userId)[0].id).update({
               followers:  copyUsersData[elementIndex].followers
               })
               Firebase.db.collection('User').doc(Firebase.auth.currentUser.uid).update({
@@ -174,8 +172,7 @@ export default function ViewPosts(props) {
               })
               update({allUsersData : copyUsersData});
                       }
-    let RenderComments = props.Comments;
-    
+    console.log(props.Comments);
     return (
         <Container>
            <Image src={props.img}/> 
@@ -186,6 +183,7 @@ export default function ViewPosts(props) {
                    <strong style={{margin: 'auto' , marginRight: '100px' , marginLeft: '1px'}} onClick={CurrentUser.following.includes(props.launcher.userId) ? unFollow : follow}>{CurrentUser.following.includes(props.launcher.userId) ? 'unfollow' : 'follow'}{console.log(CurrentUser.following.includes(props.launcher.userId))}</strong>
                </Bio>
                 <div style={{width: '90%' , height: '100%'}}>
+                { props.Comments.length > 0 ? props.Comments.map( Comment => <Comments img = {Comment.image} Author = {Comment.Author} Content = {Comment.Content} />) : <div></div>}
                </div>
                <IconContainer>
                <Icon src={require('./iconmonstr-heart-thin.svg')} onClick={like} style={{filter: props.likes.includes(CurrentUser.userId) ? 'invert(15%) sepia(90%) saturate(7438%) hue-rotate(358deg) brightness(103%) contrast(107%)' : 'none'}} />

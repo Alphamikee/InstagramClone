@@ -17,22 +17,18 @@ class Firebase{
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
         this.db = app.firestore()
-        this.storage = app.storage()
+        this.storage = app.storage();
+        this.provider = new app.auth.GoogleAuthProvider();
         this.uploadData = this.uploadData.bind(this);
         this.downloadData = this.downloadData.bind(this);
         this.fetchAllDate = this.fetchAllDate.bind(this);
         this.promisedUploadData = this.promisedUploadData.bind(this);
     }
-    /*      const snapshot = await db.collection('books').get();
-            //console.log(snapshot.docs.map(doc => doc.data()));
-            this.props.downloadBooks(snapshot.docs.map(doc => doc.data()));
-            return snapshot.docs.map(doc => doc.data());
-     */
     login(email,password){
         return this.auth.signInWithEmailAndPassword(email,password);
     }
     logout(){
-        return this.auth.signOut().then(() => console.log('done'));
+        return this.auth.signOut().then(() => console.alert('done'));
     }
    downloadData(value) {
          let storageref = this.storage.ref();

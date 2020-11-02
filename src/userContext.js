@@ -1,18 +1,16 @@
 import React , {createContext , useReducer} from "react";
-import Storeis from "./Storeis";
 export const LoginContext = createContext();
     const reducer = (state,pair) => ({...state,...pair});
     const initialState = {
         Login: false,
         email: null,
         Photos: {},
-        password: null,
+        password: '',
         userId: null,
         fullName: null,
         profilePhoto:'',
         availabeUsers: null,
-        finalObject: {},
-        currentPhoto: null,
+        UID: null,
         allUsersData: [{
             profilePhoto: null,
             followers: [],

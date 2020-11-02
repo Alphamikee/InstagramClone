@@ -1,6 +1,6 @@
 import React , {useContext , useState}from "react";
 import './searchResults.css';
-import {LoginContext} from './userContext';
+import {LoginContext} from '../userContext';
 import Autosuggest from 'react-autosuggest';
 import styled from 'styled-components';
 import SearchResults from "./searchResults";
@@ -52,7 +52,7 @@ function NavBar(){
     }
     const getSuggestionValue = suggestion => suggestion.name;
     const renderSuggestion = suggestion => (
-        <SearchResults userId = {suggestion.userId} img ={state.finalObject[suggestion.profilePhoto]} followers={suggestion.followers} following={suggestion.following} fullName={suggestion.fullName} id={suggestion.id} key={suggestion.id}/>
+        <SearchResults userId = {suggestion.userId} img ={suggestion.profilePhoto} followers={suggestion.followers} following={suggestion.following} fullName={suggestion.fullName} id={suggestion.id} key={suggestion.id}/>
     )
     let onSuggestionsFetchRequested = ({value}) => {
         setSuggestions(getSuggestions(value));
