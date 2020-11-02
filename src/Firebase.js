@@ -28,7 +28,7 @@ class Firebase{
         return this.auth.signInWithEmailAndPassword(email,password);
     }
     logout(){
-        return this.auth.signOut().then(() => console.alert('done'));
+        return this.auth.signOut().then(() => alert('done'));
     }
    downloadData(value) {
          let storageref = this.storage.ref();
