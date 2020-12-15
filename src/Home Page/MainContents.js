@@ -7,20 +7,17 @@ import PopUpContent from '../Home Page/PopUpContent';
 import Firebase from "../Firebase";
 import Storeis from "../Posts and Stories/Storeis";
 let MainContent = styled.div`
-    min-height: 100vw;
     grid-row: 2 / 3;
-    display: grid;
-    grid-template-columns: 1fr 1fr 0.5fr;
-    grid-template-rows: 1fr 5fr;
     width: 100%;
     height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 `;
 let StoriesContainer = styled.div`
     grid-column: 2 / 3;
     background-color: white;
-    margin-right: 320px;
     border: whitesmoke 1px outset;
-    overflow: visible /*Alpha*/;
+    overflow: visible ;
     width: 700px;
     height: 120px;
     margin-top: 6%;
@@ -31,7 +28,7 @@ let StoriesContainer = styled.div`
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     margin-right: auto;
-    margin-top: -250px;
+    margin-left: auto;
  `;
  let Button = styled.button`
     position: fixed;
@@ -45,7 +42,6 @@ let StoriesContainer = styled.div`
     height: 60px;
     font-size: 53px;
     &: hover {
-        //background-color: #1E90FF;
         background: rgb(30,227,255);
         background: linear-gradient(90deg, deepskyblue 0%, #1E90FF) 91%);
     };
@@ -68,7 +64,7 @@ function MainContents(props){
     id = {post.id}
     />)
     return(
-        [ <div id = 'Stories'></div>, <MainContent>
+         <MainContent>
                 <StoriesContainer id = 'stories'>
                     <Storeis />
                 </StoriesContainer>
@@ -78,7 +74,7 @@ function MainContents(props){
                 <Popup modal trigger ={<Button>+</Button>}>
                      {close => <PopUpContent close={close} />}
                 </Popup>
-        </MainContent>]
+        </MainContent>
     )
 }
 export default MainContents;
